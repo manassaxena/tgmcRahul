@@ -1,0 +1,173 @@
+Jsp page(registration.jsp):
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="template.css">
+</head>
+<body>
+<div class="content">
+
+  		<div class="header">
+				<div class="logo">
+				<h1>
+				<span class="dark">SITE LOGO</span>
+	 			</h1>
+	 			</div> 
+	  		</div>
+  			
+	  		<div class="bar">
+	  			<h4>REGISTRATION</h4>
+	  		</div>
+	  		
+	  		<div class="search_field">
+	  			&nbsp
+	  		</div>
+	  		
+	  		
+	<div class="left">
+		  
+		    <div class="left_box">
+ 
+				 <form action="registration123.java" method="post">
+			
+						  First Name :
+						  &nbsp&nbsp&nbsp
+						  <input type="text" name="first_name">
+						  &nbsp&nbsp&nbsp&nbsp&nbsp
+						 
+						  Last Name :
+						  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+						  <input type="text" name="last_name">
+						  <br/>
+						  <br/> 
+						  
+						  Gender :
+						  &nbsp&nbsp&nbsp&nbsp&nbsp
+						  <input type="radio" name="gender" value="male">Male
+						   &nbsp&nbsp&nbsp&nbsp&nbsp
+						  <input type="radio" name="gender" value="female">Female
+						  <br/>
+						  <br/>
+						 
+						  BirthDate :
+						  &nbsp&nbsp&nbsp&nbsp&nbsp
+						  <input type="text" name="date_of_birth">
+
+						  <br/>
+						 (mm/dd/yyyy)
+						  <br/><br/>
+						  
+						  Email id :
+						 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+						  <input type="text" name="email_id">
+						  <br/>
+						  <br/>
+						  Password :
+						  &nbsp&nbsp&nbsp&nbsp
+						  <input type="password" name="password">
+						   &nbsp&nbsp
+						  Confirm Password :
+					
+						  <input type="password" name="confirm_password">
+						  <br/>
+						  <br/>
+						
+						 <input type="submit" value="Sign up" align="middle">
+						 <br/>
+						 <br/>
+				  </div>
+				 </form>
+   		  
+    </div>
+    
+    <div class="footer">
+    
+    </div>
+</div>
+  
+  
+  
+</body>
+</html>
+
+
+
+Servlet page(registration123.java):
+
+package fservlet;
+import java.io.*;
+import java.sql.*;
+import javax.sql.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+ 
+
+public class registration123 extends HttpServlet
+{
+	
+	String fname,lname,gender,dob,email,pwd;
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException{
+		 fname=request.getParameter("first_name"); 
+		 lname=request.getParameter("last_name"); 
+		 gender=request.getParameter("gender"); 
+		 dob=request.getParameter("date_of_birth"); 
+		 email=request.getParameter("email_id"); 
+		 pwd=request.getParameter("password"); 
+	
+			}
+
+  public void doPost(HttpServletRequest req, HttpServletResponse res) 
+		throws ServletException, IOException
+{
+	  try
+	  {
+			
+		    Class.forName("com.ibm.db2.jcc.DB2Driver").newInstance();
+		
+			Connection con = DriverManager.getConnection("jdbc:db2://localhost:50000/TESTDB1","root","root"); 
+			Statement st= con.createStatement(); 
+		
+		    int i=st.executeUpdate("insert into username123 values ('"+fname+" "+lname+"','"+gender+"','"+dob+"','"+email+"','"+pwd+"')");
+		
+			con.close();
+	  }
+	catch(SQLException e)
+	{
+	       out.println(e);
+	}
+}
+}
+
+
+Servletmapping(web.xml):
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>gfc</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+    <description></description>
+    <display-name>registration123</display-name>
+    <servlet-name>registration123</servlet-name>
+    <servlet-class>fservlet.registration123</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>registration123</servlet-name>
+    <url-pattern>/registration123</url-pattern>
+  </servlet-mapping>
+</web-app>
