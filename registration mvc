@@ -114,18 +114,20 @@ public class registration123 extends HttpServlet
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException{
-		 fname=request.getParameter("first_name"); 
-		 lname=request.getParameter("last_name"); 
-		 gender=request.getParameter("gender"); 
-		 dob=request.getParameter("date_of_birth"); 
-		 email=request.getParameter("email_id"); 
-		 pwd=request.getParameter("password"); 
 	
 			}
 
   public void doPost(HttpServletRequest req, HttpServletResponse res) 
 		throws ServletException, IOException
 {
+
+   	 fname=request.getParameter("first_name"); 
+		 lname=request.getParameter("last_name"); 
+		 gender=request.getParameter("gender"); 
+		 dob=request.getParameter("date_of_birth"); 
+		 email=request.getParameter("email_id"); 
+		 pwd=request.getParameter("password"); 
+	
 	  try
 	  {
 			
