@@ -1,103 +1,31 @@
-package jforum;
+<%@page language="java" import="java.util.*" %>
+<html>
+<head>
+<title>Data Page</title>
+<link rel="stylesheet" type="text/css" href="template.css">
 
-import java.sql.*;
-
-import java.util.*;
-import java.io.*;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+</head>
 
 
-public class forum extends HttpServlet {
-private static final long serialVersionUID = 1L;
-String s;
-Connection con ;
-Statement st;
-ResultSet rs;
-PrintWriter out ;
-  public forum()
-	{
-				try
-				{
-					Class.forName("com.ibm.db2.jcc.DB2Driver").newInstance();
-				} 
-				catch (ClassNotFoundException e)
-				{
-					e.printStackTrace();
-				} 
-				catch (InstantiationException e) 
-				{
-					e.printStackTrace();
-				} 
-				catch (IllegalAccessException e) 
-				{
-					e.printStackTrace();
-				}
-				try
-				{
-					 con = DriverManager.getConnection("jdbc:db2://localhost:50000/TESTDB1","root","root"); 
-					 st= con.createStatement(); 
-				}
-		catch(Exception e){}
-	
-    
-	}
-	
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		
-		 out = response.getWriter();
-			
-			//
-			List dataList = new ArrayList(); 
-			try 
-			{
-				
-				String sqlret="select name1 from userposts";
-				 rs=st.executeQuery(sqlret); 
-				
-				while (rs.next ())
-				{
+<body> 
+<div class="left">
+<%Iterator itr;%>
+ <%List data= (List)request.getAttribute("data");
 
-					  //Add records into data list
-					
-					  dataList.add(rs.getString("name1"));
-					 
-					 
-				}
-				
-				rs.close ();
+for (itr=data.iterator(); itr.hasNext(); )
+{%><h3>post</h3>
+<div class="left_box">
+<p><%=itr.next()%></p>
+<%}%>
+</div>
+</div>
 
-				  st.close ();
-			}
-			catch (Exception e) 
-			{
-				out.println(e);
-			}
-			
-				 request.setAttribute("data",dataList);
-				
+<div id="result"></div>
 
-				  //Disptching request
+<form name="f1"  action = "ajaxforum" method="post">
+<p>Your name: <input name="word" type="text" id="word">
+<input value="Go" type="submit"></p>
 
-				  RequestDispatcher dispatcher = request.getRequestDispatcher("postret.jsp");
-
-				  if (dispatcher != null)
-				  {
-					  dispatcher.forward(request, response);
-				  } 
-		
-		
-	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-	
-	
-
-}
-}
+</form>
+</body>
+</html>
